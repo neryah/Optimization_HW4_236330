@@ -9,7 +9,7 @@ def plot_graph(title, values, x_label, y_label, save_to):
     plt.xlabel(x_label)
     plt.ylabel(y_label)
     plt.semilogy(values)
-    plt.savefig(path.join('graphs', save_to) + '.png')
+    plt.savefig(path.join('graphs4.2', save_to) + '.png')
     plt.close()
 
 
@@ -244,10 +244,7 @@ def AugmentedLagrangian(f, x_initial, x_star, optimal_mus, alpha=2, p=2, epsilon
     mus = np.ones(len(f.constraints))  # coefficients for the constraints
     x = x_initial
     f_star = f.minimize.val(x_star)
-    #grad_lagrangian_aggregate = []
     max_constraint_violation = []
-    #residual_objective = []
-    #d_optimal_point = []
     d_optimal_mus = []
 
     newton_grad_lagrangian_aggregate = []
@@ -275,15 +272,9 @@ def AugmentedLagrangian(f, x_initial, x_star, optimal_mus, alpha=2, p=2, epsilon
                                                               return_convergences=True)
 
         mus = np.multiply(mus, [Phi.grad(p * const.val(x))[0] for const in f.constraints])
-        # lagrangianInstance.mus = mus
-        # gradient_function = lagrangianInstance.grad()
-
         convergence_f = [abs(evaluation_function(x_) - f_star) for x_ in x_series]
 
-        # grad_lagrangian_aggregate.append(norm(gradient_function(x)))
         max_constraint_violation.append(max([const.val(x) for const in f.constraints] + [0]))
-        # residual_objective.append(norm(f.val(x) - f_star))
-        # d_optimal_point.append(norm(x - x_star))
         d_optimal_mus.append(norm(np.subtract(mus, optimal_mus)))
 
         length = len(convergence_f)
@@ -295,37 +286,6 @@ def AugmentedLagrangian(f, x_initial, x_star, optimal_mus, alpha=2, p=2, epsilon
 
         p *= alpha
     print(f"Solution:\nx:\n{x}\n\n\nmus:{mus}")
-    # ALS's iterations graphs
-    # plot_graph(title='Gradient of the Augmented Lagrangian aggregate',
-    #            values=grad_lagrangian_aggregate,
-    #            x_label='ALS iteration',
-    #            y_label=r'$||\nabla F_{p,\mu} (x,\lambda)||$',
-    #            save_to='grad_aggregate')
-    # #
-    # plot_graph(title='Maximal constraint violation',
-    #            values=max_constraint_violation,
-    #            x_label='ALS iteration',
-    #            y_label=r'$max_i (g_i (x))$',
-    #            save_to='max_violation')
-    # #
-    # plot_graph(title='Residual in the objective function',
-    #            values=residual_objective,
-    #            x_label='ALS iteration',
-    #            y_label=r'$|f(x) - f(x^*)|$',
-    #            save_to='residual_objective')
-    # #
-    # plot_graph(title='Distance to the optimal point',
-    #            values=d_optimal_point,
-    #            x_label='ALS iteration',
-    #            y_label=r'$||x-x^*||$',
-    #            save_to='optimal_point')
-    # #
-    # plot_graph(title='Distance to the optimal multipliers',
-    #            values=d_optimal_mus,
-    #            x_label='ALS iteration',
-    #            y_label=r'$||\lambda-\lambda ^*||$',
-    #            save_to='optimal_mus')
-    #
     # Newton's iterations graphs
     plot_graph(title='Gradient of the Augmented Lagrangian aggregate',
                values=newton_grad_lagrangian_aggregate,
@@ -431,8 +391,8 @@ class part2target:
 
 
 def main():
-    if not path.exists('graphs'):
-        mkdir('graphs')
+    if not path.exists('graphs4.2'):
+        mkdir('graphs4.2')
 
     AugmentedLagrangian(f=part2target(),
                         x_initial=np.ones((2, 1)),
